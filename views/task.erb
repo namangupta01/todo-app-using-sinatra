@@ -1,0 +1,96 @@
+<form action="add_tasks" method="POST">
+	<div align="center"><input style="color:blue;font-size:40px" type="name" placeholder="Enter Your Task Here" name="task"/>
+	</br>
+	<div style="margin: 10px;">
+	<input type="radio" name="important_or_not" value="true" checked="checked"/>Important</t>
+	<input type="radio" name="important_or_not" value="false"/>Not Important</br>
+	</div>
+	<div style="margin: 10px;">
+	<input type="radio" name="urgent_or_not" value="true" checked="checked"/>Uegent</t>
+	<input type="radio" name="urgent_or_not" value="false"/>Not Urgent</br>
+	</div>
+	<input style="color:black;font-size:20px;margin: 10px;" type="submit" value="Add Task"/>
+	</div>
+</form>
+<% color = "black" %>
+<ul>
+<% tasks.each do |task|%>
+		<% if task.important == "true" and task.urgent == "true" %>
+				<% color = "red" %>
+		<% elsif task.important == "true" and task.urgent == "false" %>
+				<% color = "green" %>
+		<% elsif task.important == "false" and task.urgent == "true" %>
+				<% color = "blue" %>
+		<% else %>
+				<% color = "black" %>
+		<% end %>
+		<div class="boxed" >
+		</br>
+		<li>
+		<% if task.task_completed %> 
+		<font style="color:<%= color%>;" size="6"><strike><%= task.task%></strike></font>
+			<% else %>
+			<font style="color:<%= color%>" size="6" family="arial"><%= task.task%></font>
+				<% end %>
+	</br>
+	<td >
+			<form  style="display:inline-block" action="/remove_task" method="POST">
+				<input type="hidden" name="task_id" value="<%= task.id %>"/>
+				<input style="color:black;font-size:20px;margin: 15px;"type="submit" value="Remove Task" />
+			</form>
+
+			<form  style="display:inline-block" action="/toggle_task" method="POST">
+				<input type="hidden" name="task_id" value="<%= task.id %>"/>
+				<input style="color:black;font-size:20px;margin: 15px;"type="submit" value="Toggle Task" />
+			</form>
+			<% if update == "true"  and task.id == task_id %>
+			</br>
+			<form action="add_updated_task" method="POST">
+			<input type="hidden" name="task_id"value="<%= task.id %>"/>
+			<input type="name" placeholder="<%= task.task %>" name="task"/></br>
+		</br>
+			<input type="radio" name="important_or_not" value="true" checked="checked"/>Important</t>
+			<input type="radio" name="important_or_not" value="false"/>Not Important</br>
+			<input type="radio" name="urgent_or_not" value="true" checked="checked"/>Uegent</t>
+			<input type="radio" name="urgent_or_not" value="false"/>Not Urgent</br>
+			<input style="color:black;font-size:20px;margin: 15px;"type="submit" value="Update Task"/>
+			</form>
+			<% update="false" %>
+
+			<% else %>
+			<form  style="display:inline-block" action="/update_task" method="POST">
+				<input type="hidden" name="task_id" value="<%= task.id %>"/>
+				<input style="color:black;font-size:20px;margin: 15px;"type="submit" value="Update Task" />
+			</form>
+			<!--	<% if task.important =="true" %>
+				"Important"
+				<%else %>
+					"Not Important"
+				<% end %>
+
+				<% if task.urgent =="true" %>
+					"Uegent"
+				<%else %>
+					"Not Urgent"
+				<% end %> -->
+			<% end %>
+	</td>
+</li>
+</div>
+	<% end %>
+</ul>
+
+<style>
+	.strikethrough {
+		text-decoration: line-through;
+	}
+</style>
+<style>
+.boxed {
+  border: 2px solid gray ;
+  text-align: center;
+  border-radius: 30px;
+}
+</style>
+ 
+
